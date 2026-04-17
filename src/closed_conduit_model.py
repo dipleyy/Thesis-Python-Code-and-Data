@@ -1,4 +1,4 @@
-# Model Cave Flood (epiphreatic lift passage flood) Simulation
+# Model Cave Flood (closed-conduit epiphreatic lift passage flood) Simulation
 # --------------------------------------------------------------------
 # What this script does
 # 1) Reads cave survey shots and builds a 3D centerline
@@ -9,15 +9,15 @@
 #    Blumberg and Curl (1974)  equation
 # 5) Runs steady 1D hydraulic calculations for Darcy-Weisbach, Manning, and Hazen-Williams
 # 7) Adds diagnostics files:
-#- dimensionless numbers (Re, f, relative roughness, friction slope)
-#- anchor calibration diagnostics
-#- method-comparison metrics
-#- discharge scenario analysis
-#- parameter sensitivity analysis
-#- uncertainty envelopes from Monte Carlo perturbations
-#- QA/QC checks for geometry formulas
+# dimensionless numbers (Re, f, relative roughness, friction slope)
+# anchor calibration diagnostics
+# method-comparison metrics
+# discharge scenario analysis
+# parameter sensitivity analysis
+# uncertainty envelopes from Monte Carlo perturbations
+# QA/QC checks for geometry formulas
 
-# - The flood pulse is implemented as repeated steady snapshots for scenario analysis.
+# The flood pulse is implemented as repeated steady snapshots for scenario analysis.
 
 
 import re
@@ -369,11 +369,11 @@ def blumberg_curl_ff(
 # The model treats the flood as one steady "snapshot" rather than
 # a fully unsteady brief event.
 # Steps inside this block:
-#-convert discharge into node velocities using V = Q/A
-#-average node values onto passage segments
-#-compute head loss by the chosen hydraulic equation
-#-add minor losses from expansions/contractions
-#-accumulate losses downstream to build HGL and EGL
+# convert discharge into node velocities using V = Q/A
+# average node values onto passage segments
+# compute head loss by the chosen hydraulic equation
+# add minor losses from expansions/contractions
+# accumulate losses downstream to build HGL and EGL
 # Output is one complete hydraulic profile along the passage.
 def simulate_snapshot(
         geom: Geometry,
@@ -459,9 +459,9 @@ def simulate_snapshot(
     }
 
 # Simple hydrograph generator.
-# This makes a triangular flood pulse.
-# discharge rises from base flow to peak flow, then falls back down.
-# provides a sequence of steady discharges for repeated snapshot runs.
+# Makes a triangular flood pulse.
+# Discharge rises from base flow to peak flow, then falls back down.
+# Provides a sequence of steady discharges for repeated snapshot runs.
 def make_hydrograph(Q_base: float, Q_peak: float, n_steps: int):
     # Create a simple triangular flood hydrograph that rises to a peak and then falls.
     t = np.linspace(0.0, 1.0, n_steps)
@@ -869,7 +869,7 @@ class ValidationData:
 
         #Load validation points from a CSV file.
         #Required columns: s_m, V_obs_mps
-        #Optional column:  label
+        
 
         df = pd.read_csv(path)
         required = {'s_m', 'V_obs_mps'}
@@ -979,7 +979,7 @@ def run_discharge_closure_validation(
         # Back-calculate velocity from each method's own Sf
         if method == 'darcy':
             # hf = f*(Δs/De)*V²/(2g)  →  Sf = f*V²/(De*2g)
-            # →  V = sqrt(Sf * De * 2g / f)
+            # to V = sqrt(Sf * De * 2g / f)
             f_safe = np.where(
                 np.isfinite(f_nodes) & (f_nodes > 1e-12),
                 f_nodes, np.nan
@@ -996,8 +996,8 @@ def run_discharge_closure_validation(
 
         else:  # hazen-williams
             # Sf = 10.67*Q^1.852 / (C^1.852 * De^4.87)
-            #   Q = (Sf * C^1.852 * De^4.87 / 10.67)^(1/1.852)
-            #   V = Q / A
+            # Q = (Sf * C^1.852 * De^4.87 / 10.67)^(1/1.852)
+            # V = Q / A
             Q_back_nodes = (
                                    np.maximum(Sf_nodes, 0.0)
                                    * (coeffs.C ** 1.852)
@@ -1059,7 +1059,7 @@ def summarize_geometry_simple(geom: Geometry) -> pd.DataFrame:
 # --------------------------------------------------------------------
 # Main pipeline
 # --------------------------------------------------------------------
-# Master function that ties workflow together.
+# Main function that ties the above ^ together.
 # Order of opertaions:
 #   1) read all input files
 #   2) build the survey centerline
@@ -1104,7 +1104,7 @@ def run_full_model(
 
     # Geometry comes directly from LRUD ellipses — no anchor scaling applied.
     # Area = pi*a*b, Rh = A/P following Springer (2004).
-    # Arrays are trimmed to n_nodes in case lrud returns n_shots+1 points.
+    
     A_nodes = A_lr[:n_nodes]
     Rh_nodes = Rh_lr[:n_nodes]
     geom = Geometry(x=x, y=y, z=z, A=A_nodes, Rh=Rh_nodes)
@@ -1271,7 +1271,7 @@ def run_full_model(
 
 
 if __name__ == '__main__':
-    # Update these paths to your local file locations if needed.
+    
     paths = InputPaths(
         survey_path='survey.txt',
         flow_table_path='Flow data ell.csv',
@@ -1279,4 +1279,4 @@ if __name__ == '__main__':
         output_dir='outputs'
     )
 
-    run_full_model(paths=paths, show_plots=True, validation_path='validation_points.csv')
+    run_full_model(paths=paths, show_plots=False, validation_path='validation_points.csv')
