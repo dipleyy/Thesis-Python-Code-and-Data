@@ -9,26 +9,30 @@ The model compares three hydraulic equations:
 
 ## Repository structure
 
-- `src/` — Python model code
-- `inputs/` — required input files
-- `outputs/` — primary model results
+- `src/` Python model code
+- `inputs/` required input files
+- `outputs/` primary model results
+
+## Model Code
+- [`closed_conduit_model.py`](src/closed_conduit_model.py) — main Python script used to run the hydraulic model, process input data, and generate all outputs
 
 ## Input files
 
-- `survey.txt` — cave survey data with LRUD measurements
-- `Flow data ell.csv` — scallop-derived velocities and hydraulic parameters
-- `Survey_and_scallop_data.csv` — scallop data used to estimate discharge
+- `survey.txt` cave survey data with LRUD measurements
+- `Flow data ell.csv` scallop-derived velocities and hydraulic parameters
+- `Survey_and_scallop_data.csv` scallop data used to estimate discharge
+- `Scallop measurements.csv`' raw scallop measurments for all four scallop sites
 
 ## Output files
 
 - Model results exported as CSV files, including:
-  - `*_nodes.csv` — node-by-node hydraulic results (HGL, EGL, velocity, Reynolds number, friction slope)
-  - `geometry_nodes.csv` — conduit geometry along the passage (area, hydraulic radius, elevation, coordinates)
-  - `method_summary_metrics.csv` — summary statistics for each method
-  - `method_comparison_metrics.csv` — comparison between hydraulic equations
-  - `validation_metrics_summary.csv` — model validation metrics
-  - `validation_point_comparison.csv` — observed vs modeled values at validation sites
-  - `darcy_uncertainty_envelope.csv` — Monte Carlo uncertainty bounds for the primary (Darcy–Weisbach) model
+  - `*_nodes.csv` node-by-node hydraulic results (HGL, EGL, velocity, Reynolds number, friction slope)
+  - `geometry_nodes.csv` conduit geometry along the passage (area, hydraulic radius, elevation, coordinates)
+  - `method_summary_metrics.csv` summary statistics for each method
+  - `method_comparison_metrics.csv` comparison between hydraulic equations
+  - `validation_metrics_summary.csv` model validation metrics
+  - `validation_point_comparison.csv` observed vs modeled values at validation sites
+  - `darcy_uncertainty_envelope.csv` Monte Carlo uncertainty bounds for the primary (Darcy–Weisbach) model
 
 ## Notes
 
@@ -39,4 +43,5 @@ The model compares three hydraulic equations:
 ## Author
 
 Ripley Taylor  
-M.S. Geological Sciences — Ohio University
+M.S. Earth and Environmental Geosciences 
+Ohio University
